@@ -1,0 +1,29 @@
+.chatHeader {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  height: 55px;
+  background-color: var(--bg-color-gray);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.chatHeader__user {
+  margin-left: 10px;
+  flex: 1;
+}
+
+.chatHeader__user > h2 {
+  font-size: 15px;
+  color: #e2e2c7;
+  margin-bottom: 0;
+  max-width: 24ch;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.chatHeader__user > time {
+  font-size: 14px;
+  color: #a9aaa5;
+  margin-top: -25px;
+}

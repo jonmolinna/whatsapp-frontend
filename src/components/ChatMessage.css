@@ -1,0 +1,29 @@
+.chatMessage {
+  position: relative;
+  padding: 10px;
+  width: fit-content;
+  border-radius: 10px;
+  margin-bottom: 17px;
+  background-color: var(--bg-color-gray);
+  max-width: 77%;
+}
+
+.chatMessage__reciever {
+  margin-left: auto;
+  background-color: #056162;
+  padding: 5px 10px 5px 10px;
+}
+
+.chatMessage > p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.chatMessage time {
+  font-size: xx-small;
+  margin-left: 10px;
+}
+
+.chatMessage__delete {
+  margin: 0;
+}

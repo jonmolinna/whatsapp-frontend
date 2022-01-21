@@ -1,0 +1,13 @@
+.ChatInicioMessage {
+  background-color: var(--bg-color-gray);
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  border-radius: 20px;
+}
+
+.ChatInicioMessage > p {
+  text-align: center;
+  padding: 10px;
+}

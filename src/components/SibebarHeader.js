@@ -1,0 +1,45 @@
+import React from 'react';
+import './SibebarHeader.css';
+import { Avatar, IconButton } from '@mui/material';
+import DonutLargeIcon from '@mui/icons-material/DonutLarge';
+import MessageIcon from '@mui/icons-material/Message';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { blueGrey } from '@mui/material/colors';
+
+import { useAuthState, useAuthDispatch } from '../context/auth';
+import { chatAt } from '../util/chatAt';
+
+const SibebarHeader = () => {
+    const { user } = useAuthState();
+    const dispatch = useAuthDispatch();
+
+    const handleLogout = () => {
+        dispatch({
+            type: 'LOGOUT'
+        })
+    };
+
+    return (
+        <div className='sibebarHeader'>
+            <Avatar
+                sx={{ bgcolor: blueGrey[700] }}
+                onClick={handleLogout}
+            >
+                { chatAt(user.name) }
+            </Avatar>
+            <div className='sibebarHeader__right'>
+                <IconButton>
+                    <DonutLargeIcon />
+                </IconButton>
+                <IconButton>
+                    <MessageIcon />
+                </IconButton>
+                <IconButton>
+                    <MoreVertIcon />
+                </IconButton>
+            </div>
+        </div>
+    )
+}
+
+export default SibebarHeader;

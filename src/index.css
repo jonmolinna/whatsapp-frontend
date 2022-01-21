@@ -1,0 +1,47 @@
+:root {
+  --bg-color-dark: #131c21;
+  --bg-color-gray: #3a4347;
+  --border-color: #2b2f31;
+  --first-color: #19a38e;
+  --font: "Raleway", "sans-serif";
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: var(--font);
+  color: #ffff;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-color-gray);
+  max-width: 1300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+a {
+  text-decoration: none;
+  color: var(--first-color);
+}
+
+img {
+  width: 100%;
+}
+
+svg {
+  color: aliceblue;
+}
+
+@media screen and (min-width: 48em) {
+}
+
+@media screen and (min-width: 64em) {
+}

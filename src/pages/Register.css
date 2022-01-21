@@ -1,0 +1,54 @@
+.register {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--bg-color-dark);
+}
+
+.register__card {
+  margin-top: 10vh;
+  border: 5px solid var(--border-color);
+  border-radius: 20px;
+  padding: 12px 10px;
+  background-color: var(--bg-color-gray);
+  width: 360px;
+}
+
+.register__card > h2 {
+  color: #d9d9d9;
+  font-size: 21px;
+}
+
+.register__form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 25px;
+}
+
+.register__form > input {
+  padding: 15px;
+  background-color: var(--bg-color-gray);
+  outline: none;
+  border: 1px solid lightgray;
+  margin-bottom: 12px;
+  color: #fff;
+  border-radius: 14px;
+}
+
+.register__form > button {
+  padding: 15px;
+  border-radius: 30px;
+  font-weight: 600;
+  background-color: #d7dbdc;
+}
+
+.register__card > p {
+  margin-top: 20px;
+  color: #6e767d;
+}
+
+.register__errors {
+  color: #2ba1a3;
+}

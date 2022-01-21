@@ -1,0 +1,26 @@
+.home {
+}
+
+.chat__none {
+  display: none;
+}
+
+@media screen and (min-width: 48em) {
+  .home {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .home__sidebar {
+    flex: 0.3;
+    display: flex;
+  }
+
+  .home__chat {
+    flex: 0.7;
+    display: flex;
+  }
+}
+
+@media screen and (min-width: 64em) {
+}

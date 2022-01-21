@@ -1,0 +1,8 @@
+.sibebarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: var(--bg-color-gray);
+  height: 55px;
+}
