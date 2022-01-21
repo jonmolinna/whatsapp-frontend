@@ -5,6 +5,7 @@ import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import KeyboardVoiceIcon from '@mui/icons-material/KeyboardVoice';
 import SendIcon from '@mui/icons-material/Send';
+import { toast } from 'react-hot-toast';
 
 import axios from '../util/axios';
 import { useMessageState } from '../context/message';
@@ -33,7 +34,7 @@ const ChatFooter = () => {
             await axios('/sendMessage', options);
             setContent('');
         } catch (err) {
-            console.log(err.response);
+            toast.error(err.response.data.message);
         }
     };
 

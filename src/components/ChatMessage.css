@@ -27,3 +27,14 @@
 .chatMessage__delete {
   margin: 0;
 }
+
+.chatMessage__deleted {
+  color: #a9aaa5;
+  display: flex;
+  align-items: center;
+}
+
+.chatMessage__deleted > svg {
+  color: #a9aaa5;
+  margin: 0 2px;
+}

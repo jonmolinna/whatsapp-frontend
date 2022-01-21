@@ -28,7 +28,10 @@ const SidebarChat = ({ user }) => {
                 <h2>{Capitalize(user.name)}</h2>
                 <p>
                     {
-                        user.latestMessage? user.latestMessage.message : `${user.name} esta en whatsapp`
+                        user.latestMessage? 
+                        (user.latestMessage.status === false? (user.latestMessage.message) : ('mensaje eliminado')) 
+                        : 
+                        (`${user.name} esta en whatsapp`)
                     }
                 </p>
             </aside>

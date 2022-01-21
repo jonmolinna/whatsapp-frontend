@@ -7,16 +7,21 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { blueGrey } from '@mui/material/colors';
 
 import { useAuthState, useAuthDispatch } from '../context/auth';
+import { useMessageDispatch } from '../context/message';
 import { chatAt } from '../util/chatAt';
 
 const SibebarHeader = () => {
     const { user } = useAuthState();
-    const dispatch = useAuthDispatch();
+    const dispatchAuth = useAuthDispatch();
+    const dispatchMessage = useMessageDispatch();
 
     const handleLogout = () => {
-        dispatch({
+        dispatchAuth({
             type: 'LOGOUT'
-        })
+        });
+        dispatchMessage({
+            type: 'REMOVE_MESSAGE'
+        });
     };
 
     return (
