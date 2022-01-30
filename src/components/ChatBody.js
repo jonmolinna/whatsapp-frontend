@@ -2,8 +2,13 @@ import React, { useState, useEffect } from 'react';
 import './ChatBody.css';
 import ChatMessage from './ChatMessage';
 import ChatInicioMessage from './ChatInicioMessage';
+import Pusher from 'pusher-js';
 
 import axios from '../util/axios';
+
+const pusher = new Pusher('3cddea69a989a4f7e3bd', {
+    cluster: 'us2'
+});
 
 const ChatBody = ({ name }) => {
     const [messages, setMessages] = useState([]);
@@ -30,6 +35,12 @@ const ChatBody = ({ name }) => {
         };
 
         getMessagesUser(usuario);
+
+        const channel = pusher.subscribe('messages');
+        channel.bind('newMessage', function(data){
+            getMessagesUser(usuario);
+        });
+
     }, [token, usuario]);
 
     return (

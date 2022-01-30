@@ -48,3 +48,9 @@
   margin-top: 20px;
   color: #6e767d;
 }
+
+.login__loading {
+  text-align: center;
+  font-size: 20px;
+  color: #f4f4f4;
+}

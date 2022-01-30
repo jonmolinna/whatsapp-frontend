@@ -14,7 +14,8 @@ const initialForm = {
 
 const Register = () => {
     const [form, setForm] = useState(initialForm);
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState(null);
+    const [loading, setLoading] = useState(false);
     let history = useHistory();
 
     const handleChange = (e) => {
@@ -26,6 +27,7 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true)
 
         try {
             let options = {
@@ -47,6 +49,8 @@ const Register = () => {
             setForm(initialForm);
         } catch (err) {
             setErrors(err.response.data.error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -83,9 +87,20 @@ const Register = () => {
                         value={form.confirmPassword}
                         onChange={handleChange}
                     />
-                    <button>Regístrate</button>
+                    <button
+                        disabled={!(form.name && form.username && form.password && form.confirmPassword) ? true : false}
+                    >
+                        Regístrate
+                    </button>
                 </form>
                 <p>¿Ya tienes una cuenta? <Link to="/">Iniciar sesión</Link></p>
+                {
+                    loading && (
+                        <div className='register__loading'>
+                            <p>Cargando ...</p>
+                        </div>
+                    )
+                }
                 {
                     errors && <ul className='register__errors'>
                         {

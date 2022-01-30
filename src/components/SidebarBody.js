@@ -7,10 +7,13 @@ import axios from '../util/axios';
 
 const SidebarBody = () => {
     const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(false);
     const token = localStorage.getItem('token-whatsapp');
 
     useEffect(() => {
         const getChats = async () => {
+            setLoading(true);
+
             try {
                 let options = {
                     method: 'GET',
@@ -23,6 +26,8 @@ const SidebarBody = () => {
                 setUsers(res.data.users)
             } catch (err) {
                 console.log(err.response);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -39,9 +44,18 @@ const SidebarBody = () => {
             </aside>
             <aside className='sidebarBody__chats'>
                 {
-                    users && users.map(user => (
-                        <SidebarChat key={user._id} user={user} />
-                    ))
+                    loading? (
+                        <p>Cargando ...</p>
+                    ) : (
+                        <>
+                            {
+                                users && users.map(user => (
+                                    <SidebarChat key={user._id} user={user} />
+                                ))
+
+                            }
+                        </>
+                    )
                 }
             </aside>
         </div>

@@ -44,3 +44,8 @@
   -ms-overflow-style: none; /*IE and Edge*/
   scrollbar-width: none; /*Firefox*/
 }
+
+.sidebarBody__chats > p {
+  font-size: 20px;
+  text-align: center;
+}

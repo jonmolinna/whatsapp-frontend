@@ -12,7 +12,8 @@ const initialForm = {
 
 const Login = () => {
     const [form, setForm] = useState(initialForm);
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState(null);
+    const [loading, setLoading] = useState(false);
     let history = useHistory();
     const dispatch = useAuthDispatch();
 
@@ -25,6 +26,7 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true)
 
         try {
             let options = {
@@ -47,6 +49,8 @@ const Login = () => {
             history.push("/home");
         } catch (err) {
             setErrors(err.response.data.error)
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -69,9 +73,21 @@ const Login = () => {
                         value={form.password}
                         onChange={handleChange}
                     />
-                    <button type='submit'>Iniciar sesión</button>
+                    <button 
+                        type='submit'
+                        disabled={!(form.username && form.password) ? true : false}
+                    >
+                        Iniciar sesión
+                    </button>
                 </form>
                 <p>¿No tienes una cuenta? <Link to='/register'>Regístrate</Link></p>
+                {
+                    loading && (
+                        <div className='login__loading'>
+                            <p>Cargando ...</p>
+                        </div>
+                    )
+                }
                 {
                     errors && <ul className='register__errors'>
                         {
