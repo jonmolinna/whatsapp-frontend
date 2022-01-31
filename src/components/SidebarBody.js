@@ -2,8 +2,13 @@ import React, { useEffect, useState } from 'react';
 import './SidebarBody.css';
 import SidebarChat from './SidebarChat';
 import SearchIcon from '@mui/icons-material/Search';
+// import Pusher from 'pusher-js';
 
 import axios from '../util/axios';
+
+// const pusher = new Pusher('3cddea69a989a4f7e3bd', {
+//     cluster: 'us2'
+// });
 
 const SidebarBody = () => {
     const [users, setUsers] = useState([]);
@@ -31,7 +36,15 @@ const SidebarBody = () => {
             }
         };
 
+        // pusher.unsubscribe('messages')
+
         getChats();
+
+        // const channel = pusher.subscribe('messages');
+        // channel.bind('newMessages', function(data){
+        //     getChats();
+        // });
+
     }, [token]);
 
     return (

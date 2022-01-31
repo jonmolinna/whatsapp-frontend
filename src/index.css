@@ -21,8 +21,8 @@ html {
 
 body {
   margin: 0;
-  background-color: var(--bg-color-gray);
-  max-width: 1300px;
+  background-color: var(--bg-color-dark);
+  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
 }

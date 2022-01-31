@@ -16,6 +16,7 @@ const ChatBody = ({ name }) => {
     let usuario = name?.username;
 
     useEffect(() => {
+
         const getMessagesUser = async (usuario) => {
             try {
                 let options = {
@@ -34,10 +35,17 @@ const ChatBody = ({ name }) => {
             }
         };
 
+        pusher.unsubscribe('messages')
+
         getMessagesUser(usuario);
 
         const channel = pusher.subscribe('messages');
-        channel.bind('newMessage', function(data){
+        channel.bind('newMessages', function(data){
+            getMessagesUser(usuario);
+        });
+
+        const channeldelete = pusher.subscribe('deleteMessage');
+        channeldelete.bind('newDeleteMessage', function(data){
             getMessagesUser(usuario);
         });
 
