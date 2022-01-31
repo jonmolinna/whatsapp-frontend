@@ -38,6 +38,7 @@ const ChatFooter = () => {
         }
     };
 
+
     return (
         <div className='chatFooter'>
             <IconButton>
@@ -55,11 +56,17 @@ const ChatFooter = () => {
                 />
                 <button type='submit'>Send</button>
             </form>
-            <IconButton>
-                {
-                    content.length > 0 ? <SendIcon /> : <KeyboardVoiceIcon />
-                }
-            </IconButton>
+            {
+                content.length > 0 ? (
+                    <IconButton onClick={handleSubmit}>
+                        <SendIcon />
+                    </IconButton>
+                ) : (
+                    <IconButton>
+                        <KeyboardVoiceIcon />
+                    </IconButton>
+                )
+            }
         </div>
     )
 }
