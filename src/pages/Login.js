@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
-import './Login.css';
+import React, { useState, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { Box, Typography, TextField, Button } from '@mui/material';
+import Message from '../components/Alert/Message';
 
+import { style } from '../style';
 import axios from '../util/axios';
-import { useAuthDispatch } from '../context/auth';
+import { ContextAuth } from '../context/login/Context';
+import { LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILURE } from '../context/login/Types';
 
 const initialForm = {
     username: "",
@@ -12,27 +15,28 @@ const initialForm = {
 
 const Login = () => {
     const [form, setForm] = useState(initialForm);
-    const [errors, setErrors] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const { dispatch, isLoading, error } = useContext(ContextAuth);
     let history = useHistory();
-    const dispatch = useAuthDispatch();
 
     const handleChange = (e) => {
         setForm({
             ...form,
-            [e.target.name] : e.target.value
+            [e.target.name]: e.target.value
         })
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true)
+
+        dispatch({
+            type: LOGIN_START
+        });
 
         try {
             let options = {
                 method: 'POST',
                 headers: {
-                    "Content-type" : "application/json; charset=utf-8",
+                    "Content-type": "application/json; charset=utf-8",
                 },
                 data: JSON.stringify({
                     username: form.username,
@@ -42,63 +46,93 @@ const Login = () => {
 
             const res = await axios('/login', options);
             dispatch({
-                type: 'LOGIN',
+                type: LOGIN_SUCCESS,
                 payload: res.data
             });
             setForm(initialForm);
             history.push("/home");
         } catch (err) {
-            setErrors(err.response.data.error)
-        } finally {
-            setLoading(false);
+            dispatch({
+                type: LOGIN_FAILURE,
+            })
         }
     };
 
     return (
-        <div className='login'>
-            <div className='login__card'>
-                <h2>Inicia sesión en Whatsapp Clone</h2>
-                <form className='login__form' autoComplete='off' onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        placeholder='Username'
-                        name='username'
-                        value={form.username}
-                        onChange={handleChange}
-                    />
-                    <input
-                        type="password"
-                        placeholder='Contraseña'
-                        name='password'
-                        value={form.password}
-                        onChange={handleChange}
-                    />
-                    <button 
-                        type='submit'
-                        disabled={!(form.username && form.password) ? true : false}
-                    >
-                        Iniciar sesión
-                    </button>
-                </form>
-                <p>¿No tienes una cuenta? <Link to='/register'>Regístrate</Link></p>
+        <Box component="div" sx={{ backgroundColor: style.color_gray, minHeight: '100vh' }}>
+            <Box sx={{ display: "flex", flexDirection: 'column', alignItems: "center", paddingTop: "10vh" }}>
+
+                <Box
+                    component="img"
+                    src="https://res.cloudinary.com/dhdxq3mkm/image/upload/v1655847020/whatsapp-project/WhatsApp.svg_sogxoc.webp"
+                    alt="logo"
+                    sx={{ height: "5.6rem", width: "5.6rem" }}
+                />
                 {
-                    loading && (
-                        <div className='login__loading'>
-                            <p>Cargando ...</p>
-                        </div>
+                    error && (
+                        <Box sx={{ marginY: ".5rem", borderRadius: "10px", width: "90%", maxWidth: "390px", display: "flex", flexDirection: "column" }}>
+                            <Message
+                                message="Credenciales no válidas"
+                                severity="error"
+                            />
+                        </Box>
                     )
                 }
-                {
-                    errors && <ul className='register__errors'>
-                        {
-                            Object.values(errors).map((value, index) => (
-                                <li key={index}>{value}</li>
-                            ))
-                        }
-                    </ul>
-                }
-            </div>
-        </div>
+                <Box
+                    sx={{ backgroundColor: style.color_white, marginTop: ".4rem", padding: "1.5rem", borderRadius: "10px", width: "90%", maxWidth: "390px", display: "flex", flexDirection: "column" }}
+                >
+                    <Typography
+                        component="h2"
+                        variant='h5'
+                        sx={{ textAlign: "center" }}
+                    >
+                        Whatsapp Clone
+                    </Typography>
+                    <Box
+                        component="form"
+                        autoComplete='off'
+                        onSubmit={handleSubmit}
+                        sx={{ display: "flex", flexDirection: "column", marginTop: "1rem" }}
+                    >
+                        <TextField
+                            type="text"
+                            label="Usuario"
+                            name='username'
+                            size="small"
+                            value={form.username}
+                            onChange={handleChange}
+                            sx={{ marginBottom: "1rem" }}
+                        />
+                        <TextField
+                            type="password"
+                            label='Contraseña'
+                            name='password'
+                            size="small"
+                            value={form.password}
+                            onChange={handleChange}
+                            sx={{ marginBottom: "1rem" }}
+                        />
+                        <Button
+                            type='submit'
+                            variant="contained"
+                            disabled={(!(form.username && form.password) ? true : false) || isLoading}
+                        >
+                            {
+                                isLoading ? 'Loading...' : 'Iniciar sesión'
+                            }
+                        </Button>
+                    </Box>
+                </Box>
+                <Typography
+                    component="p"
+                    variant='subtitle1'
+                    sx={{ textAling: "center", marginTop: "1rem" }}
+                >
+                    ¿No tienes una cuenta? <Link to='/register'>Regístrate</Link>
+                </Typography>
+
+            </Box>
+        </Box>
     )
 };
 

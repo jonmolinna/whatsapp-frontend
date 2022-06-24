@@ -7,32 +7,32 @@ import Register from '../pages/Register';
 import { useAuthState } from '../context/auth';
 
 const AppRouter = () => {
-    let { user } = useAuthState();
+    let user = null;
 
     return (
         <Switch>
-            <Route 
-                exact 
+            <Route
+                exact
                 path="/"
                 render={() => (
-                    user? <Redirect to="/home" /> : <Login />
+                    user ? <Redirect to="/home" /> : <Login />
                 )}
             />
             <Route
                 exact
                 path="/register"
                 render={() => (
-                    user? <Redirect to="/home" /> : <Register />
-                    )}
+                    user ? <Redirect to="/home" /> : <Register />
+                )}
             />
-            <Route 
+            <Route
                 exact
                 path="/home"
                 render={() => (
-                    user? <Home /> : <Redirect to="/" />
-                    )}
+                    user ? <Home /> : <Redirect to="/" />
+                )}
             />
-           
+
         </Switch>
     )
 }

@@ -1,6 +1,6 @@
 :root {
-  --bg-color-dark: #131c21;
-  --bg-color-gray: #3a4347;
+  --bg-color: #eee;
+  --bg-color-white: #f4f4f4;
   --border-color: #2b2f31;
   --first-color: #19a38e;
   --font: "Raleway", "sans-serif";
@@ -21,8 +21,8 @@ html {
 
 body {
   margin: 0;
-  background-color: var(--bg-color-dark);
-  max-width: 1200px;
+  background-color: var(--bg-color);
+  /* max-width: 1200px; */
   margin-left: auto;
   margin-right: auto;
 }
