@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 
-import { useAuthState } from '../context/auth';
+import { ContextAuth } from '../context/login/Context';
 
 const AppRouter = () => {
-    let user = null;
+    const { user } = useContext(ContextAuth);
 
     return (
         <Switch>
