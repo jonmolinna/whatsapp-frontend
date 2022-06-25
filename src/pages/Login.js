@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Typography, TextField, Button } from '@mui/material';
 import Message from '../components/Alert/Message';
@@ -9,11 +9,19 @@ import useLogin from '../hooks/useLogin';
 const Login = () => {
     const { isLoading, error } = useContext(ContextAuth);
     const [form, handleChange, handleLogin] = useLogin();
+    const isMountedRef = useRef(true);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         handleLogin();
     };
+
+    useEffect(() => {
+        // componente desmontado
+        return () => {
+            isMountedRef.current = false;
+        }
+    }, []);
 
     return (
         <Box component="div" sx={{ backgroundColor: style.color_gray, minHeight: '100vh' }}>

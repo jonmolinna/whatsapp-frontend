@@ -1,118 +1,124 @@
-import React, { useState } from 'react';
-import './Register.css';
-import { Link, useHistory  } from 'react-router-dom';
-import { toast } from 'react-hot-toast';
-
-import axios from '../util/axios';
-
-const initialForm = {
-    name: '',
-    username: '',
-    password: '',
-    confirmPassword: '',
-};
+import React, { useContext, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Box, Typography, TextField, Button } from '@mui/material';
+import { style } from '../style';
+import useRegister from '../hooks/useRegister';
+import { ContextRegister } from '../context/register/Context';
 
 const Register = () => {
-    const [form, setForm] = useState(initialForm);
-    const [errors, setErrors] = useState(null);
-    const [loading, setLoading] = useState(false);
-    let history = useHistory();
-
-    const handleChange = (e) => {
-        setForm({
-            ...form,
-            [e.target.name] : e.target.value
-        })
-    };
+    const { isLoading, error } = useContext(ContextRegister);
+    const [form, handleChange, handleRegister] = useRegister();
+    const isMountedRef = useRef(true);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true)
-
-        try {
-            let options = {
-                method: "POST",
-                headers: {
-                    "Content-type" : "application/json; charset=utf-8"
-                },
-                data: JSON.stringify({
-                    name: form.name,
-                    username: form.username,
-                    password: form.password,
-                    confirmPassword: form.confirmPassword,
-                })
-            };
-
-            const res = await axios('/addUser', options);
-            toast.success(res.data.message);
-            history.push('/');
-            setForm(initialForm);
-        } catch (err) {
-            setErrors(err.response.data.error);
-        } finally {
-            setLoading(false);
-        }
+        handleRegister();
     };
 
-    return (
-        <div className='register'>
-            <div className='register__card'>
-                <h2>Únete a Whatsapp Clone.</h2>
-                <form className='register__form' autoComplete='off' onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        placeholder='Nombres'
-                        name='name'
-                        value={form.name}
-                        onChange={handleChange}
-                    />
-                    <input
-                        type="text"
-                        placeholder='Username'
-                        name='username'
-                        value={form.username}
-                        onChange={handleChange}
-                    />
-                    <input
-                        type="password"
-                        placeholder='Contraseña'
-                        name='password'
-                        value={form.password}
-                        onChange={handleChange}
-                    />
-                    <input
-                        type="password"
-                        placeholder='Confirma contraseña'
-                        name='confirmPassword'
-                        value={form.confirmPassword}
-                        onChange={handleChange}
-                    />
-                    <button
-                        disabled={!(form.name && form.username && form.password && form.confirmPassword) ? true : false}
-                    >
-                        Regístrate
-                    </button>
-                </form>
-                <p>¿Ya tienes una cuenta? <Link to="/">Iniciar sesión</Link></p>
-                {
-                    loading && (
-                        <div className='register__loading'>
-                            <p>Cargando ...</p>
-                        </div>
-                    )
-                }
-                {
-                    errors && <ul className='register__errors'>
-                        {
-                            Object.values(errors).map((value, index) => (
-                                <li key={index}>{value}</li>
-                            ))
+    useEffect(() => {
+        // componente desmontado
+        return () => {
+            isMountedRef.current = false;
+        }
+    }, []);
 
-                        }
-                    </ul> 
-                }
-            </div>
-        </div>
+    return (
+        <Box component="div" sx={{ backgroundColor: style.color_gray, minHeight: '100vh' }}>
+            <Box sx={{ display: "flex", justifyContent: "center", paddingTop: "5vh" }}>
+                <Box sx={{ width: "90%", maxWidth: "390px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+                    <Box
+                        component="img"
+                        src="https://res.cloudinary.com/dhdxq3mkm/image/upload/v1655847020/whatsapp-project/WhatsApp.svg_sogxoc.webp"
+                        alt="logo"
+                        sx={{ height: "5.6rem", width: "5.6rem" }}
+                    />
+                    <Box sx={{ backgroundColor: style.color_white, marginTop: ".4rem", padding: "1.5rem", borderRadius: "10px", width: "100%" }}>
+                        <Typography
+                            component="h2"
+                            variant='h5'
+                            sx={{ textAlign: "center" }}
+                        >
+                            Whatsapp Clone
+                        </Typography>
+                        <Box
+                            component="form"
+                            autoComplete='off'
+                            onSubmit={handleSubmit}
+                            sx={{ display: "flex", flexDirection: "column", marginTop: "1rem" }}
+                        >
+                            <TextField
+                                type="text"
+                                label='Nombres'
+                                name='name'
+                                size="small"
+                                value={form.name}
+                                onChange={handleChange}
+                                sx={{ marginBottom: "1rem" }}
+                            />
+                            <TextField
+                                type="text"
+                                label='Username'
+                                name='username'
+                                size="small"
+                                value={form.username}
+                                onChange={handleChange}
+                                sx={{ marginBottom: "1rem" }}
+                            />
+                            <TextField
+                                type="password"
+                                label='Contraseña'
+                                name='password'
+                                size="small"
+                                value={form.password}
+                                onChange={handleChange}
+                                sx={{ marginBottom: "1rem" }}
+                            />
+                            <TextField
+                                type="password"
+                                label='Confirma contraseña'
+                                name='confirmPassword'
+                                size="small"
+                                value={form.confirmPassword}
+                                onChange={handleChange}
+                                sx={{ marginBottom: "1rem" }}
+                            />
+                            <Button
+                                type='submit'
+                                variant="contained"
+                                disabled={(!(form.name && form.username && form.password && form.confirmPassword) ? true : false) || isLoading}
+                            >
+                                {
+                                    isLoading ? 'Loading...' : 'Regístrate'
+                                }
+                            </Button>
+                        </Box>
+                    </Box>
+                    <Typography
+                        component="p"
+                        variant='subtitle1'
+                        sx={{ textAling: "center", marginTop: "1rem" }}
+                    >
+                        ¿Ya tienes una cuenta? <Link to="/">Iniciar sesión</Link>
+                    </Typography>
+                    {
+                        error && <Box sx={{ width: "100%", marginTop: ".5rem" }}>
+                            {
+                                Object.values(error).map((value, index) => (
+                                    <Typography
+                                        component="p"
+                                        variant='body2'
+                                        key={index}
+                                        sx={{ color: "#c62828" }}
+                                    >
+                                        {value}
+                                    </Typography>
+                                ))
+                            }
+                        </Box>
+                    }
+                </Box>
+            </Box>
+        </Box>
     )
 }
 

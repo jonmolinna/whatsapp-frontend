@@ -8,12 +8,15 @@ import { CssBaseline } from '@mui/material';
 
 // Context
 import { ContextProviderAuth } from './context/login/Context';
+import { ContextProviderRegister } from './context/register/Context';
 
 ReactDOM.render(
   <React.StrictMode>
     <CssBaseline />
     <ContextProviderAuth>
-      <App />
+      <ContextProviderRegister>
+        <App />
+      </ContextProviderRegister>
     </ContextProviderAuth>
   </React.StrictMode>,
   document.getElementById('root')
