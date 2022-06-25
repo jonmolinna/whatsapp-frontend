@@ -1,19 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './SibebarHeader.css';
 import { Avatar, IconButton } from '@mui/material';
 import DonutLargeIcon from '@mui/icons-material/DonutLarge';
 import MessageIcon from '@mui/icons-material/Message';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { blueGrey } from '@mui/material/colors';
-
 import { useAuthState, useAuthDispatch } from '../context/auth';
 import { useMessageDispatch } from '../context/message';
 import { chatAt } from '../util/chatAt';
+import { ContextAuth } from '../context/login/Context';
 
 const SibebarHeader = () => {
-    const { user } = useAuthState();
+    // const { user } = useAuthState();
     const dispatchAuth = useAuthDispatch();
     const dispatchMessage = useMessageDispatch();
+    const { user } = useContext(ContextAuth);
 
     const handleLogout = () => {
         dispatchAuth({
@@ -30,7 +31,7 @@ const SibebarHeader = () => {
                 sx={{ bgcolor: blueGrey[700] }}
                 onClick={handleLogout}
             >
-                { chatAt(user.name) }
+                {chatAt(user.name)}
             </Avatar>
             <div className='sibebarHeader__right'>
                 <IconButton>

@@ -1,7 +1,7 @@
 import React from 'react';
 import './Home.css';
-import Chat from '../components/Chat';
-import Sidebar from '../components/Sibebar';
+// import Chat from '../components/Chat';
+// import Sidebar from '../components/Sibebar';
 
 // import { useMessageState } from '../context/message';
 
@@ -16,8 +16,8 @@ const Home = () => {
                 <article className={`home__chat ${message? '' : 'chat__none'}`}>
                 <Chat />
             </article> */}
-            <Sidebar />
-            <Chat />
+            {/* <Sidebar /> */}
+            {/* <Chat /> */}
         </div>
     )
 }
