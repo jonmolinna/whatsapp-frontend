@@ -24,3 +24,16 @@
 
 @media screen and (min-width: 64em) {
 }
+
+/* 
+{ <article className={`home__sidebar ${message? 'chat__none' : ''}`}>
+                <Sidebar />
+                </article>
+                <article className={`home__chat ${message? '' : 'chat__none'}`}>
+                <Chat />
+            </article> 
+            <Sidebar /> 
+            <Chat /> 
+
+
+*/

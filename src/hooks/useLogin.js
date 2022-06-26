@@ -2,6 +2,7 @@ import { useState, useContext } from 'react';
 import axios from '../util/axios';
 import { LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILURE } from '../context/login/Types';
 import { ContextAuth } from '../context/login/Context';
+import { useHistory } from 'react-router-dom';
 
 const initialForm = {
     username: "",
@@ -11,6 +12,7 @@ const initialForm = {
 const useLogin = () => {
     const [form, setForm] = useState(initialForm);
     const { dispatch } = useContext(ContextAuth);
+    let history = useHistory();
 
     const handleChange = (e) => {
         setForm({
@@ -41,6 +43,7 @@ const useLogin = () => {
                 type: LOGIN_SUCCESS,
                 payload: res.data
             });
+            history.push('/home');
             setForm(initialForm);
         } catch (err) {
             dispatch({

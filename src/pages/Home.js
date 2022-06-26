@@ -1,24 +1,22 @@
 import React from 'react';
-import './Home.css';
-// import Chat from '../components/Chat';
-// import Sidebar from '../components/Sibebar';
-
-// import { useMessageState } from '../context/message';
+import { Box, Grid } from '@mui/material';
+import { style } from '../style';
+import Sidebar from '../components/Sidebar/Sidebar';
+import Chat from '../components/Chat/Chat';
 
 const Home = () => {
-    // const { message } = useMessageState();
 
     return (
-        <div className='home'>
-            {/* <article className={`home__sidebar ${message? 'chat__none' : ''}`}>
-                <Sidebar />
-                </article>
-                <article className={`home__chat ${message? '' : 'chat__none'}`}>
-                <Chat />
-            </article> */}
-            {/* <Sidebar /> */}
-            {/* <Chat /> */}
-        </div>
+        <Box sx={{ backgroundColor: style.color_gray, height: '100vh' }}>
+            <Grid container>
+                <Grid item xs={4}>
+                    <Sidebar />
+                </Grid>
+                <Grid item xs={8}>
+                    <Chat />
+                </Grid>
+            </Grid>
+        </Box>
     )
 }
 
