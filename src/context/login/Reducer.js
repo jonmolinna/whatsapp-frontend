@@ -10,6 +10,9 @@ const Reducer = (state, action) => {
             };
         }
         case LOGIN_SUCCESS: {
+            if (action.payload?.token) {
+                localStorage.setItem("whatsapp-token", action.payload.token);
+            }
             return {
                 user: action.payload,
                 isLoading: false,
@@ -24,6 +27,7 @@ const Reducer = (state, action) => {
             };
         }
         case LOGOUT: {
+            localStorage.removeItem('whatsapp-token')
             return {
                 user: null,
                 isLoading: false,

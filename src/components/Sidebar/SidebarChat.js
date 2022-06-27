@@ -1,13 +1,34 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Box, Avatar, Typography } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
 import { style } from '../../style';
+import { Capitalize } from '../../util/capitalize';
+import { chatAt } from '../../util/chatAt';
+import moment from 'moment';
+import 'moment/locale/es';
+import { ContextUsers } from '../../context/users/Context';
+import { ADD_USER_ID } from '../../context/users/Types';
 
-const SidebarChat = () => {
+const SidebarChat = ({ user }) => {
+    const { dispatch } = useContext(ContextUsers);
+
+    const addIdUser = (idUser) => {
+        dispatch({
+            type: ADD_USER_ID,
+            payload: idUser,
+        });
+    };
+
     return (
-        <Box sx={{ display: "flex", alignItems: "center", padding: ".4rem", borderBottom: `2px solid ${style.border_color}` }}>
+        <Box
+            onClick={() => addIdUser(user._id)}
+            sx={{
+                display: "flex", alignItems: "center", padding: ".4rem", borderBottom: `2px solid ${style.border_color}`,
+                "&:hover": { backgroundColor: "#eeeeee", cursor: "pointer" },
+            }}
+        >
             <Avatar sx={{ bgcolor: blueGrey[700], marginRight: "1ch" }}>
-                M
+                {chatAt(user.name)}
             </Avatar>
             <Box sx={{ width: "100%" }}>
                 <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -15,14 +36,16 @@ const SidebarChat = () => {
                         variant="subtitle2"
                         component="h2"
                     >
-                        Kendra
+                        {Capitalize(user.name)}
                     </Typography>
                     <Typography
                         variant="body2"
                         component="p"
                         sx={{ fontSize: "12px" }}
                     >
-                        26/06/2022
+                        {
+                            user.latestMessage && `${moment(user.latestMessage?.createdAt).format('L')}`
+                        }
                     </Typography>
 
                 </Box>
@@ -30,11 +53,13 @@ const SidebarChat = () => {
                     variant="body2"
                     component="p"
                 >
-                    This is a message
+                    {
+                        user.latestMessage?.message || `${Capitalize(user.name)} esta en whatsapp`
+                    }
                 </Typography>
             </Box>
         </Box >
     )
-}
+};
 
-export default SidebarChat
+export default SidebarChat;
