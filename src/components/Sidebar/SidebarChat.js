@@ -7,21 +7,21 @@ import { chatAt } from '../../util/chatAt';
 import moment from 'moment';
 import 'moment/locale/es';
 import { ContextUsers } from '../../context/users/Context';
-import { ADD_USER_ID } from '../../context/users/Types';
+import { ADD_USER_TO_CHAT } from '../../context/users/Types';
 
 const SidebarChat = ({ user }) => {
     const { dispatch } = useContext(ContextUsers);
 
-    const addIdUser = (idUser) => {
+    const addIdUser = (userChat) => {
         dispatch({
-            type: ADD_USER_ID,
-            payload: idUser,
+            type: ADD_USER_TO_CHAT,
+            payload: userChat,
         });
     };
 
     return (
         <Box
-            onClick={() => addIdUser(user._id)}
+            onClick={() => addIdUser(user)}
             sx={{
                 display: "flex", alignItems: "center", padding: ".4rem", borderBottom: `2px solid ${style.border_color}`,
                 "&:hover": { backgroundColor: "#eeeeee", cursor: "pointer" },

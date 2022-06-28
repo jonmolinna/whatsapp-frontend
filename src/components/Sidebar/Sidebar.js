@@ -21,8 +21,6 @@ const Sidebar = () => {
         getAllUsers();
     }, [getAllUsers]);
 
-    console.log('Hola Mundo Sidebar')
-
     return (
         <Box sx={{ borderRight: `2px solid ${style.border_color}`, height: "100vh" }}>
             <Box sx={{ display: "flex", justifyContent: "space-between", padding: ".4rem", height: "3.5rem" }}>

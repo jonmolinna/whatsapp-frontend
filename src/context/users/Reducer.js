@@ -2,8 +2,8 @@ import {
     GET_ALL_USERS_START,
     GET_ALL_USERS_SUCCESS,
     GET_ALL_USERS_FAILURE,
-    ADD_USER_ID,
-    CLEAR_USER_ID
+    ADD_USER_TO_CHAT,
+    CLEAR_USER_TO_CHAT
 } from './Types';
 
 const Reducer = (state, action) => {
@@ -32,16 +32,16 @@ const Reducer = (state, action) => {
                 error: action.payload,
             }
         }
-        case ADD_USER_ID: {
+        case ADD_USER_TO_CHAT: {
             return {
                 ...state,
-                isIdMessage: action.payload,
+                userChat: action.payload,
             }
         }
-        case CLEAR_USER_ID: {
+        case CLEAR_USER_TO_CHAT: {
             return {
                 ...state,
-                isIdMessage: null,
+                userChat: null,
             }
         }
         default: {

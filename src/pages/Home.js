@@ -7,7 +7,7 @@ import Chat from '../components/Chat/Chat';
 import { ContextUsers } from '../context/users/Context';
 
 const Home = () => {
-    const { isIdMessage } = useContext(ContextUsers);
+    const { userChat } = useContext(ContextUsers);
 
     return (
         <Box sx={{ backgroundColor: style.color_gray, height: '100vh' }}>
@@ -17,7 +17,7 @@ const Home = () => {
                 </Grid>
                 <Grid item xs={8}>
                     {
-                        isIdMessage ? <Chat /> : <ChatHome />
+                        userChat ? <Chat /> : <ChatHome />
                     }
                 </Grid>
             </Grid>

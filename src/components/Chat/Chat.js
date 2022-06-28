@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Box, IconButton, Avatar, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from '@mui/icons-material/Search';
@@ -6,12 +6,33 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import MicIcon from '@mui/icons-material/Mic';
+import SendIcon from '@mui/icons-material/Send';
 import { blueGrey } from '@mui/material/colors';
 import Message from './Message';
 import { style } from '../../style';
+import useMessages from '../../hooks/useMessages';
+import { ContextMessages } from '../../context/messages/Context';
+import { ContextUsers } from '../../context/users/Context';
+import { Capitalize } from '../../util/capitalize';
+import { chatAt } from '../../util/chatAt';
+import moment from 'moment';
+import 'moment/locale/es';
 
 const Chat = () => {
+    const [getMessagesByUser, message, setMessage, handleSendMessage] = useMessages();
+    const { messages } = useContext(ContextMessages);
+    const { userChat } = useContext(ContextUsers);
+    const ultFechaConect = userChat?.latestMessage?.createdAt || userChat?.createdAt;
 
+    useEffect(() => {
+        getMessagesByUser();
+    }, [getMessagesByUser]);
+
+    const handleSubmitMessage = (e) => {
+        e.preventDefault();
+        if (!message) return false;
+        handleSendMessage();
+    };
 
     return (
         <Box sx={{ height: "100vh" }}>
@@ -20,20 +41,22 @@ const Chat = () => {
                     <IconButton>
                         <ArrowBackIcon />
                     </IconButton>
-                    <Avatar sx={{ bgcolor: blueGrey[700], marginRight: "1ch" }}>T</Avatar>
+                    <Avatar sx={{ bgcolor: blueGrey[700], marginRight: "1ch" }}>
+                        {chatAt(userChat?.name)}
+                    </Avatar>
                     <Box sx={{ flexGrow: "1" }}>
                         <Typography
                             variant="subtitle1"
                             component="h3"
                         >
-                            Name User
+                            {Capitalize(userChat?.name)}
                         </Typography>
                         <Typography
                             variant="body2"
                             component="p"
                             sx={{ marginTop: "-7px" }}
                         >
-                            fecha
+                            últ. vez {moment(ultFechaConect).subtract('hour').fromNow()}
                         </Typography>
                     </Box>
                     <IconButton>
@@ -51,28 +74,11 @@ const Chat = () => {
                 }}
             >
                 <Box sx={{ padding: "1rem" }}>
-                    <Message />
-                    <Message />
-                    <Message />
-                    <Message />
-                    <Message />
-                    <Message />
-                    <Message />
-                    <Message />
-                    <Message />
-                    <Message />
-                    <Message />
-                    <Message />
-                    <Message />
-                    <Message />
-                    <Message />
-                    <Message />
-                    <Message />
-                    <Message />
-                    <Message />
-                    <Message />
-                    <Message />
-                    <Message />
+                    {
+                        messages && messages.map(message => (
+                            <Message key={message._id} message={message} />
+                        ))
+                    }
                 </Box>
             </Box>
             <Box sx={{ height: "3.5rem", padding: ".4rem", borderTop: `2px solid ${style.border_color}` }}>
@@ -86,22 +92,28 @@ const Chat = () => {
                     <Box
                         component="form"
                         autoComplete='off'
+                        onSubmit={handleSubmitMessage}
                         sx={{ flexGrow: "1", backgroundColor: `${style.color_white}`, padding: ".3rem", borderRadius: "7px" }}
                     >
                         <input
                             type="text"
                             placeholder='Escribe un mensaje aquí'
+                            name="message"
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
                             style={{ width: "100%", border: "none", outline: "none" }}
                         />
                         <button type='submit' style={{ display: "none" }}>Send</button>
                     </Box>
-                    <IconButton>
-                        <MicIcon />
+                    <IconButton onClick={handleSubmitMessage}>
+                        {
+                            message.length > 0 ? <SendIcon /> : <MicIcon />
+                        }
                     </IconButton>
                 </Box>
             </Box>
         </Box>
     )
-}
+};
 
 export default Chat;
