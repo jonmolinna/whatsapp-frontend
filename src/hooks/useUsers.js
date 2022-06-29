@@ -1,16 +1,20 @@
 import { useContext, useCallback } from 'react';
 import axios from '../util/axios';
 import { ContextUsers } from '../context/users/Context';
-import { GET_ALL_USERS_START, GET_ALL_USERS_SUCCESS, GET_ALL_USERS_FAILURE } from '../context/users/Types';
+import {
+    // GET_ALL_USERS_START,
+    GET_ALL_USERS_SUCCESS,
+    GET_ALL_USERS_FAILURE
+} from '../context/users/Types';
 
 const useUsers = () => {
     const { dispatch } = useContext(ContextUsers);
     const token = localStorage.getItem('whatsapp-token');
 
     const getAllUsers = useCallback(async () => {
-        dispatch({
-            type: GET_ALL_USERS_START,
-        });
+        // dispatch({
+        //     type: GET_ALL_USERS_START,
+        // });
 
         try {
             let options = {

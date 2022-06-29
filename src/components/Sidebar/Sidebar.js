@@ -9,22 +9,50 @@ import SidebarChat from './SidebarChat';
 import { style } from '../../style';
 import { ContextAuth } from '../../context/login/Context';
 import { ContextUsers } from '../../context/users/Context';
+import { ContextMessages } from '../../context/messages/Context';
 import { chatAt } from '../../util/chatAt';
 import useUsers from '../../hooks/useUsers';
+import { LOGOUT } from '../../context/login/Types';
+import { RESET_ALL_USERS } from '../../context/users/Types';
+import { RESET_MESSAGES_BY_USER } from '../../context/messages/Types';
+import Pusher from 'pusher-js';
+
+const pusher = new Pusher('3cddea69a989a4f7e3bd', {
+    cluster: 'us2'
+});
 
 const Sidebar = () => {
-    const { user } = useContext(ContextAuth);
-    const { users } = useContext(ContextUsers);
+    const { user, dispatch: dispatchAuth } = useContext(ContextAuth);
+    const { users, dispatch: dispatchUsers } = useContext(ContextUsers);
+    const { dispatch: dispatchMessages } = useContext(ContextMessages);
     const [getAllUsers] = useUsers();
 
     useEffect(() => {
+        pusher.unsubscribe('messages');
         getAllUsers();
+
+        const channel = pusher.subscribe('messages');
+        channel.bind('newMessages', function (data) {
+            getAllUsers();
+        })
     }, [getAllUsers]);
+
+    const handleLogout = () => {
+        dispatchMessages({
+            type: RESET_MESSAGES_BY_USER,
+        });
+        dispatchUsers({
+            type: RESET_ALL_USERS,
+        });
+        dispatchAuth({
+            type: LOGOUT,
+        });
+    };
 
     return (
         <Box sx={{ borderRight: `2px solid ${style.border_color}`, height: "100vh" }}>
             <Box sx={{ display: "flex", justifyContent: "space-between", padding: ".4rem", height: "3.5rem" }}>
-                <Avatar sx={{ bgcolor: blueGrey[700] }}>
+                <Avatar sx={{ bgcolor: blueGrey[700] }} onClick={() => handleLogout()}>
                     {chatAt(user.name)}
                 </Avatar>
                 <Box>
@@ -60,4 +88,4 @@ const Sidebar = () => {
     )
 }
 
-export default Sidebar
+export default Sidebar;

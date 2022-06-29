@@ -2,9 +2,10 @@ import { useCallback, useContext, useState } from 'react';
 import axios from '../util/axios';
 import { ContextMessages } from '../context/messages/Context';
 import {
-    GET_ALL_MESSAGES_BY_USER_START,
+    // GET_ALL_MESSAGES_BY_USER_START,
     GET_ALL_MESSAGES_BY_USER_SUCCESS,
-    GET_ALL_MESSAGES_BY_USER_FAILURE
+    GET_ALL_MESSAGES_BY_USER_FAILURE,
+    ADD_MESSAGE_BY_USER_FAILURE,
 } from '../context/messages/Types';
 import { ContextUsers } from '../context/users/Context';
 
@@ -15,9 +16,9 @@ const useMessages = () => {
     const token = localStorage.getItem('whatsapp-token');
 
     const getMessagesByUser = useCallback(async () => {
-        dispatch({
-            type: GET_ALL_MESSAGES_BY_USER_START,
-        });
+        // dispatch({
+        //     type: GET_ALL_MESSAGES_BY_USER_START,
+        // });
 
         try {
             let options = {
@@ -54,11 +55,13 @@ const useMessages = () => {
                     content: message,
                 })
             };
-            const res = await axios('/sendMessage', options);
-            console.log('YOOOOOO', res)
+            await axios('/sendMessage', options);
             setMessage('');
         } catch (err) {
-            console.log(err.response)
+            dispatch({
+                type: ADD_MESSAGE_BY_USER_FAILURE,
+                payload: err.response.data
+            });
         }
     };
 

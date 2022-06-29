@@ -17,15 +17,29 @@ import { Capitalize } from '../../util/capitalize';
 import { chatAt } from '../../util/chatAt';
 import moment from 'moment';
 import 'moment/locale/es';
+import { RESET_MESSAGES_BY_USER } from '../../context/messages/Types';
+import { CLEAR_USER_TO_CHAT } from '../../context/users/Types';
+import Pusher from 'pusher-js';
+
+const pusher = new Pusher('3cddea69a989a4f7e3bd', {
+    cluster: 'us2'
+});
 
 const Chat = () => {
     const [getMessagesByUser, message, setMessage, handleSendMessage] = useMessages();
-    const { messages } = useContext(ContextMessages);
-    const { userChat } = useContext(ContextUsers);
+    const { messages, dispatch: dispatchMessages } = useContext(ContextMessages);
+    const { userChat, dispatch: dispatchUsers } = useContext(ContextUsers);
     const ultFechaConect = userChat?.latestMessage?.createdAt || userChat?.createdAt;
 
     useEffect(() => {
+        pusher.unsubscribe('messages');
+
         getMessagesByUser();
+
+        const channel = pusher.subscribe('messages');
+        channel.bind('newMessages', function (data) {
+            getMessagesByUser();
+        });
     }, [getMessagesByUser]);
 
     const handleSubmitMessage = (e) => {
@@ -34,11 +48,20 @@ const Chat = () => {
         handleSendMessage();
     };
 
+    const handleCloseChat = () => {
+        dispatchMessages({
+            type: RESET_MESSAGES_BY_USER
+        });
+        dispatchUsers({
+            type: CLEAR_USER_TO_CHAT
+        });
+    };
+
     return (
         <Box sx={{ height: "100vh" }}>
             <Box sx={{ padding: ".4rem", height: "3.5rem", borderBottom: `2px solid ${style.border_color}` }}>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <IconButton>
+                    <IconButton onClick={() => handleCloseChat()}>
                         <ArrowBackIcon />
                     </IconButton>
                     <Avatar sx={{ bgcolor: blueGrey[700], marginRight: "1ch" }}>
