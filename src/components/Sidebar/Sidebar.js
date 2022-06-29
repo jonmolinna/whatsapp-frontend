@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { Box, Avatar, IconButton } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
 import DonutLargeIcon from '@mui/icons-material/DonutLarge';
@@ -26,6 +26,7 @@ const Sidebar = () => {
     const { users, dispatch: dispatchUsers } = useContext(ContextUsers);
     const { dispatch: dispatchMessages } = useContext(ContextMessages);
     const [getAllUsers] = useUsers();
+    const isMountedRef = useRef(true);
 
     useEffect(() => {
         pusher.unsubscribe('messages');
@@ -34,7 +35,12 @@ const Sidebar = () => {
         const channel = pusher.subscribe('messages');
         channel.bind('newMessages', function (data) {
             getAllUsers();
-        })
+        });
+
+        // Component Desmount
+        return () => {
+            isMountedRef.current = false;
+        }
     }, [getAllUsers]);
 
     const handleLogout = () => {

@@ -12,10 +12,10 @@ const Home = () => {
     return (
         <Box sx={{ backgroundColor: style.color_gray, height: '100vh' }}>
             <Grid container>
-                <Grid item xs={4}>
+                <Grid item xs={12} sm={4} sx={{ display: { xs: userChat ? "none" : "block", sm: "block" } }}>
                     <Sidebar />
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={12} sm={8} sx={{ display: { xs: userChat ? "block" : "none", sm: "block" } }}>
                     {
                         userChat ? <Chat /> : <ChatHome />
                     }

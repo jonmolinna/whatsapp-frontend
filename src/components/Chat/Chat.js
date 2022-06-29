@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useRef } from 'react';
 import { Box, IconButton, Avatar, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from '@mui/icons-material/Search';
@@ -30,6 +30,7 @@ const Chat = () => {
     const { messages, dispatch: dispatchMessages } = useContext(ContextMessages);
     const { userChat, dispatch: dispatchUsers } = useContext(ContextUsers);
     const ultFechaConect = userChat?.latestMessage?.createdAt || userChat?.createdAt;
+    const isMountedRef = useRef(true);
 
     useEffect(() => {
         pusher.unsubscribe('messages');
@@ -40,6 +41,10 @@ const Chat = () => {
         channel.bind('newMessages', function (data) {
             getMessagesByUser();
         });
+
+        return () => {
+            isMountedRef.current = false;
+        }
     }, [getMessagesByUser]);
 
     const handleSubmitMessage = (e) => {
